@@ -1,5 +1,6 @@
 .idea
 /dist/*
+/builds/*
 .gulp-scss-cache
 package-lock.json
 ts-build

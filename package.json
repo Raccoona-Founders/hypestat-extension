@@ -3,7 +3,9 @@
   "description": "Hypestat",
   "version": "0.0.1",
   "public": true,
-  "scripts": {},
+  "scripts": {
+    "production": "NODE_ENV=production $(npm bin)/gulp build && $(npm bin)/gulp zip"
+  },
   "browserify": {
     "transform": [
       [
