@@ -1,0 +1,22 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current",
+          "uglify": true
+        }
+      }
+    ],
+    "react",
+    "es2017",
+    "es2015",
+    "stage-0"
+  ],
+  "retainLines": true,
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-class-properties"
+  ]
+}

@@ -1,0 +1,1 @@
+# Hypestat Link open extension

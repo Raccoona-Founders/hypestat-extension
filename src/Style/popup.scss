@@ -1,0 +1,65 @@
+@import "./clear";
+@import "./variable";
+@import "./font";
+@import "./mixins";
+
+body {
+    @include font-family;
+    width: $weight;
+    height: $height;
+    font-size: 14px;
+    font-weight: 400;
+    color: $color-light;
+    line-height: 1.42;
+    margin: 0;
+    padding: 0;
+
+    background: $color-dark;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+}
+
+.application {
+    width: $weight;
+    height: $height;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.loading {
+    display: block;
+    height: 60px;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+.title {
+    font-size: 18px;
+    text-align: center;
+    margin: 16px 0;
+}
+
+.btn {
+    transition: all 0.2s;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1.41;
+    padding: 8px 24px;
+    background: $color-light;
+    color: $color-dark;
+    border-radius: 3px;
+}
+
+.button-container {
+    text-align: center;
+}

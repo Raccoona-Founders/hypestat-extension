@@ -1,0 +1,20 @@
+@mixin size($height, $width) {
+    height: $height;
+    width: $width;
+}
+
+@mixin placeholder {
+    &::-webkit-input-placeholder {
+        @content;
+    }
+    &::-moz-placeholder {
+        @content;
+    }
+    &:-ms-input-placeholder {
+        @content;
+    }
+}
+
+@mixin block-shadow ($alpha: 0.45) {
+    box-shadow: 0 10px 20px 0 rgba(58, 60, 71, $alpha);
+}

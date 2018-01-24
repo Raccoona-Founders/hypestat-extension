@@ -1,0 +1,4 @@
+const initializeBackgroundApplication = () => {
+};
+
+export {initializeBackgroundApplication}

@@ -1,0 +1,21 @@
+.idea
+/dist/*
+.gulp-scss-cache
+package-lock.json
+ts-build
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.pid
+*.seed
+*.pid.lock
+.grunt
+bower_components
+typings/
+.npm
+# Yarn Integrity file
+.yarn-integrity
+# dotenv environment variables file
+.env
+.idea_modules/
+node_modules/
