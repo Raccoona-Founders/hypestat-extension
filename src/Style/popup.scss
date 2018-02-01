@@ -38,10 +38,19 @@ body {
     text-align: center;
 }
 
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
 .title {
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
-    margin: 16px 0;
+}
+.button-container {
+    text-align: center;
 }
 
 .btn {
@@ -60,6 +69,25 @@ body {
     border-radius: 3px;
 }
 
-.button-container {
-    text-align: center;
+.link {
+    background: none;
+    border: none;
+    color: $color-light;
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.report-text {
+    margin: 16px 0;
+
+    &.-warning {
+        color: darkorange;
+    }
+
+    &__wait {
+        text-align: center;
+    }
 }
