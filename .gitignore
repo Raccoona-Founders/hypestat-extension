@@ -10,6 +10,7 @@ yarn-error.log*
 *.pid
 *.seed
 *.pid.lock
+yarn.lock
 .grunt
 bower_components
 typings/

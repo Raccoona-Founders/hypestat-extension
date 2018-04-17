@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
     "allowJs": true,
     "declaration": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "sourceMap": true,
-    "outDir": "ts-build",
-    "jsx": "preserve",
+    "jsx": "react",
     "lib": [
       "es2016",
       "dom"
@@ -19,6 +18,7 @@
     ],
     "baseUrl": "./src",
     "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
   "include": [

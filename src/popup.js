@@ -2,12 +2,10 @@ import React from 'react';
 import {render} from 'react-dom';
 import PopupApplication from 'Popup/index.tsx';
 
+import "./Style/popup.scss";
+
 const trackException = (exception) => {
-    try {
-        AnalyticsObserver.exception(exception);
-    } catch (error) {
-        console.log('Error on send exception to GA!');
-    }
+    console.log('Error on send exception to GA!', exception);
 };
 
 const onContentLoaded = () => {

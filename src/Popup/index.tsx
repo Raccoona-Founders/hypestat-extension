@@ -1,15 +1,13 @@
 import React from 'react';
-import ExtensionPlatform from 'Core/Extension';
 import {Url, parse} from 'url';
-
-const HYPESTAT_URL = 'hypestat.com';
+import {HYPESTAT_URL} from 'Core/Constant';
+import ExtensionPlatform from 'Core/Extension';
 
 interface StateInterface {
     url?: string
 }
 
 export default class PopupApplication extends React.Component<any, StateInterface> {
-
     state = {
         url: null
     };
@@ -23,17 +21,17 @@ export default class PopupApplication extends React.Component<any, StateInterfac
         ExtensionPlatform.getTabs().query(query, (tabs) => {
             const currentTab = tabs[0];
             if (currentTab) {
-                this.setState({
-                    url: currentTab.url
+                this.setState(() => {
+                    return {
+                        url: currentTab.url
+                    };
                 })
             }
         });
     }
 
     isHostValid = (url: Url): boolean => {
-
         const segments = url.host.split('.');
-
         if (segments.length < 2) {
             return false;
         }
@@ -83,11 +81,9 @@ export default class PopupApplication extends React.Component<any, StateInterfac
         return (
             <div className="application">
                 <h1 className="title">{url.host}</h1>
-
                 <div className="button-container">
                     <button className="btn" onClick={this.onClick}>Open Hypestat</button>
                 </div>
-
             </div>
         );
     }

@@ -1,11 +1,6 @@
 import gulp from 'gulp';
 import Path from 'path';
 import del from 'del';
-import gulpWebpack from 'gulp-webpack';
-import watch from 'gulp-watch';
-import webpackConfig from './webpack.config.js';
-import named from 'vinyl-named';
-import sass from 'gulp-sass';
 import jsoneditor from 'gulp-json-editor';
 import zip from 'gulp-zip';
 
@@ -13,9 +8,9 @@ const manifest = require('./resources/manifest.json');
 
 const PATH = {
     SOURCE: Path.join(__dirname, './src'),
-    TARGET: Path.join(__dirname, './dist')
+    TARGET: Path.join(__dirname, './dist'),
+    BUILDS: Path.join(__dirname, './builds')
 };
-
 
 gulp.task('copy:root', copyTask({
     source: './app/',
@@ -53,6 +48,7 @@ gulp.task('copy:views', copyTask({
 gulp.task('manifest:production', () => {
     return gulp
         .src('./resources/manifest.json')
+        .pipe(generateManifestBuilder())
         .pipe(gulp.dest('./dist/firefox', {overwrite: true}))
         .pipe(jsoneditor((json) => {
             delete json.applications;
@@ -61,48 +57,6 @@ gulp.task('manifest:production', () => {
         }))
         .pipe(gulp.dest('./dist/chrome', {overwrite: true}))
 });
-
-//|---------------------------------------------------------------------------
-//| Configuration for create JavaScript bundles
-//| Use WebPack
-//|---------------------------------------------------------------------------
-gulp.task('js', generateBundlerTask({watch: false}));
-gulp.task('js:watch', generateBundlerTask({watch: true}));
-
-
-//|---------------------------------------------------------------------------
-//| Configuration for create CSS bundles
-//| Use gulp-sass
-//|---------------------------------------------------------------------------
-gulp.task('css', () => {
-    return gulp
-        .src('./src/Style/popup.scss')
-        .pipe(
-            sass({outputStyle: 'compressed'}).on('error', sass.logError)
-        )
-        .pipe(gulp.dest('./dist/chrome/css'))
-        .pipe(gulp.dest('./dist/firefox/css'));
-});
-
-gulp.task('css:watch', () => {
-    return watch(
-        './src/Style/**/*.scss', 
-        {},
-        () => {
-            return gulp
-                .src('./src/Style/popup.scss')
-                .pipe(
-                    sass({outputStyle: 'compressed'}).on('error', sass.logError)
-                )
-                .pipe(gulp.dest('./dist/chrome/css'))
-                .pipe(gulp.dest('./dist/firefox/css'));
-        }
-     );
-});
-
-
-
-
 
 const staticFiles = ['images', 'views', 'locales'];
 let copyStrings = staticFiles.map(staticFile => `copy:${staticFile}`);
@@ -115,7 +69,7 @@ gulp.task('clean', function clean() {
     return del(['./dist/*']);
 });
 
-gulp.task('build', ['copy', 'css', 'js']);
+gulp.task('build', ['copy']);
 
 gulp.task('copy:watch', function () {
     gulp.watch(['./src/*.*'], 'build');
@@ -152,33 +106,13 @@ function zipTask(target) {
     }
 }
 
-/**
- * @param options
- */
-function generateBundlerTask(options) {
 
-    const webpackBundlerConfig = {
-        ...webpackConfig
-    };
+function generateManifestBuilder() {
+    const packageJson = require('./package.json');
 
-    if (options.watch) {
-        webpackBundlerConfig.watch = true;
-        webpackBundlerConfig.watchOptions = {
-            aggregateTimeout: 200,
-            ignored: /node_modules/
-        };
-    }
+    return jsoneditor((json) => {
+        json.version = packageJson.version;
 
-    return () => {
-        return gulp
-            .src([
-                "./src/popup.js",
-                "./src/pageContent.js",
-                "./src/background.js"
-            ])
-            .pipe(named())
-            .pipe(gulpWebpack(webpackBundlerConfig))
-            .pipe(gulp.dest('./dist/chrome'))
-            .pipe(gulp.dest('./dist/firefox'));
-    }
+        return json
+    });
 }
