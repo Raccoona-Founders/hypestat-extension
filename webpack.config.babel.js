@@ -36,7 +36,7 @@ const Plugins = [
     isProd ? new webpack.optimize.ModuleConcatenationPlugin() : noop,
 
     isProd ? new webpack.LoaderOptionsPlugin({
-        minimize: false,
+        minimize: true,
         debug: false
     }) : noop,
 
@@ -79,7 +79,7 @@ const Loaders = [{
 
 
 const OptimisationProps = {
-    minimize: false
+    minimize: true
 };
 
 

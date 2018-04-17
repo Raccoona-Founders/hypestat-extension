@@ -1,15 +1,22 @@
 import React from 'react';
 import {Url, parse} from 'url';
+
+import {isHostValid, generateReport, HypestateReport} from 'Core';
 import {HYPESTAT_URL} from 'Core/Constant';
 import ExtensionPlatform from 'Core/Extension';
 
+
 interface StateInterface {
-    url?: string
+    url?: string;
+    urlChecked: boolean;
+    report?: HypestateReport;
 }
 
 export default class PopupApplication extends React.Component<any, StateInterface> {
     state = {
-        url: null
+        url: null,
+        urlChecked: true,
+        report: null
     };
 
     componentDidMount() {
@@ -25,34 +32,44 @@ export default class PopupApplication extends React.Component<any, StateInterfac
                     return {
                         url: currentTab.url
                     };
-                })
+                });
+
+                this.loadContent();
             }
         });
     }
 
-    isHostValid = (url: Url): boolean => {
-        const segments = url.host.split('.');
-        if (segments.length < 2) {
-            return false;
+    loadContent = () => {
+        const url = this.getUrl();
+
+        if (!url) return;
+
+        if (!isHostValid(url)) {
+            return;
         }
 
-        if (false === ['http:', 'https:'].includes(url.protocol)) {
-            return false;
-        }
+        const onSuccess = (report: HypestateReport) => {
+            this.setState(() => {
+                return {
+                    report: report
+                }
+            });
+        };
 
-        if (url.host.includes(HYPESTAT_URL)) {
-            return false;
-        }
+        const onError = () => {
+            this.setState(() => {
+                return {
+                    urlChecked: false
+                }
+            })
+        };
 
-        return true;
+        generateReport(url).then(onSuccess).catch(onError);
     };
 
     getUrl = (): Url => {
         const {url} = this.state;
-
-        if (!url) {
-            return null;
-        }
+        if (!url) return null;
 
         return parse(url);
     };
@@ -66,6 +83,37 @@ export default class PopupApplication extends React.Component<any, StateInterfac
         });
     };
 
+    renderReport() {
+        const url = this.getUrl();
+        const {report, urlChecked} = this.state;
+
+        if (!report) {
+            return (
+                <div className="report">
+                    <div className="report-wait">Wait...</div>
+                </div>
+            );
+        }
+
+        if (urlChecked) {
+            return (
+                <div className="report">
+                    <p className="report-visitors">
+                        Daily: <b>{report.uniqVisitors.d.format('0,0')}</b> / {' '}
+                        Monthly: <b>{report.uniqVisitors.m.format('0,0')}</b>
+                    </p>
+                    <p className="report-text" dangerouslySetInnerHTML={{__html: report.text}}/>
+                </div>
+            )
+        }
+
+        return (
+            <div className="report -warning">
+                This site is not found in HypeStat database.
+            </div>
+        );
+    }
+
     render() {
         const url = this.getUrl();
 
@@ -73,17 +121,21 @@ export default class PopupApplication extends React.Component<any, StateInterfac
             return <div className="application">Wait</div>
         }
 
-        const isValid = this.isHostValid(url);
+        const isValid = isHostValid(url);
         if (!isValid) {
             return <div className="application">Invalid host</div>
         }
 
         return (
             <div className="application">
-                <h1 className="title">{url.host}</h1>
-                <div className="button-container">
-                    <button className="btn" onClick={this.onClick}>Open Hypestat</button>
+                <div className="header">
+                    <h1 className="title">{url.host}</h1>
+                    <div className="button-container">
+                        <button className="link -open-hypestate" onClick={this.onClick}>On Hypestat</button>
+                    </div>
                 </div>
+
+                {this.renderReport()}
             </div>
         );
     }

@@ -98,10 +98,12 @@ function copyTask(opts) {
 }
 
 function zipTask(target) {
+    const packageJson = require('./package.json');
+
     return () => {
         return gulp
             .src(`./dist/${target}/**`)
-            .pipe(zip(`hypestat-${target}-${manifest.version}.zip`))
+            .pipe(zip(`hypestat-${target}-${packageJson.version}.zip`))
             .pipe(gulp.dest('./builds'));
     }
 }

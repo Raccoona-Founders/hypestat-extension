@@ -38,10 +38,21 @@ body {
     text-align: center;
 }
 
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+}
+
 .title {
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
-    margin: 16px 0;
+}
+
+.button-container {
+    text-align: center;
 }
 
 .btn {
@@ -60,6 +71,38 @@ body {
     border-radius: 3px;
 }
 
-.button-container {
-    text-align: center;
+.link {
+    background: none;
+    border: none;
+    color: $color-light;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &.-open-hypestate {
+        font-size: 13px;
+    }
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.report {
+    margin: 16px 0;
+
+    &-visitors {
+        margin-bottom: 8px;
+    }
+
+    &-text {
+        color: $color-primary-text;
+    }
+
+    &.-warning {
+        color: darkorange;
+    }
+
+    &-wait {
+        text-align: center;
+    }
 }
