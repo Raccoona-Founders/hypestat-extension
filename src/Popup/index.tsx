@@ -1,10 +1,9 @@
 import React from 'react';
 import {Url, parse} from 'url';
+import Extberry from 'extberry';
 
 import {isHostValid, generateReport, HypestateReport} from 'Core';
 import {HYPESTAT_URL} from 'Core/Constant';
-import ExtensionPlatform from 'Core/Extension';
-
 
 interface StateInterface {
     url?: string;
@@ -25,7 +24,7 @@ export default class PopupApplication extends React.Component<any, StateInterfac
             currentWindow: true
         };
 
-        ExtensionPlatform.getTabs().query(query, (tabs) => {
+        Extberry.tabs.query(query, (tabs) => {
             const currentTab = tabs[0];
             if (currentTab) {
                 this.setState(() => {
@@ -77,7 +76,7 @@ export default class PopupApplication extends React.Component<any, StateInterfac
     onClick = () => {
         const url = this.getUrl();
 
-        ExtensionPlatform.getTabs().create({
+        Extberry.openTab({
             url: `http://${url.host}.${HYPESTAT_URL}`,
             active: true
         });
