@@ -122,7 +122,14 @@ export default class PopupApplication extends React.Component<any, StateInterfac
 
         const isValid = isHostValid(url);
         if (!isValid) {
-            return <div className="application">Invalid host</div>
+            return (
+                <div className="application">
+                    <div className="invalid-host-error">
+                        <h1 className="invalid-host-error__title">Invalid host</h1>
+                        <p className="invalid-host-error__desc">Current host <b>{url.host}</b> is not valid for check in Hypestat.</p>
+                    </div>
+                </div>
+            )
         }
 
         return (
