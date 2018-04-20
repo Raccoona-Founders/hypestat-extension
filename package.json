@@ -1,7 +1,7 @@
 {
   "name": "hypestat",
-  "description": "Hypestat",
-  "version": "0.3.0",
+  "description": "Track any website traffic quick and easy with one click via Hypestat report",
+  "version": "0.3.1",
   "public": true,
   "scripts": {
     "webpack": "$(npm bin)/webpack",

@@ -1,14 +1,14 @@
 {
     "name": {
-        "message": "HYPESTAT"
+        "message": "HYPESTAT website Traffic report"
     },
     "short_name": {
         "message": "HYPESTAT"
     },
     "description": {
-        "message": "HYPESTAT"
+        "message": "Track any website traffic quick and easy with one click via Hypestat report"
     },
     "default_title": {
-        "message": "HYPESTAT"
+        "message": "HYPESTAT Website Traffic report"
     }
 }
