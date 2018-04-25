@@ -1,0 +1,1 @@
+console.log("Never look here. There is nothing interest here.");
