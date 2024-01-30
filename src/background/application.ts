@@ -1,4 +1,4 @@
 const initializeBackgroundApplication = () => {
 };
 
-export {initializeBackgroundApplication}
+export { initializeBackgroundApplication };

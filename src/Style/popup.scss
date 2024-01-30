@@ -4,11 +4,12 @@
 @import "./mixins";
 
 :root {
-    --lh-bg-color: #f5f5f5;
-    --lh-text-color: $color-dark;
+  --lh-bg-color: #f5f5f5;
+  --lh-text-color: $color-dark;
 }
 
-body {
+:global {
+  body {
     @include font-family;
     width: $weight;
     height: $height;
@@ -24,20 +25,20 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: antialiased;
     text-size-adjust: 100%;
-}
+  }
 
-b {
+  b {
     font-weight: 700;
-}
+  }
 
-.application {
+  .application {
     width: $weight;
     height: $height;
     padding: 10px;
     overflow: hidden;
-}
+  }
 
-.invalid-host-error {
+  .invalid-host-error {
     text-align: center;
     display: flex;
     justify-content: center;
@@ -46,16 +47,16 @@ b {
     height: $height - 20px;
 
     &__title {
-        font-size: 24px;
-        margin-bottom: 16px;
+      font-size: 24px;
+      margin-bottom: 16px;
     }
 
     &__desc {
 
     }
-}
+  }
 
-.loading {
+  .loading {
     display: block;
     height: 60px;
     width: 100%;
@@ -63,26 +64,26 @@ b {
     top: 50%;
     transform: translateY(-50%);
     text-align: center;
-}
+  }
 
-.header {
+  .header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 8px 0;
-}
+    padding: 8px 0;
+  }
 
-.title {
+  .title {
     font-size: 16px;
     text-align: center;
-}
+  }
 
-.button-container {
+  .button-container {
     text-align: center;
-}
+  }
 
-.btn {
+  .btn {
     transition: all 0.2s;
     display: inline-block;
     cursor: pointer;
@@ -96,9 +97,9 @@ b {
     background: $color-dark;
     color: $color-light;
     border-radius: 3px;
-}
+  }
 
-.link {
+  .link {
     background: none;
     border: none;
     color: $color-dark;
@@ -106,30 +107,37 @@ b {
     cursor: pointer;
 
     &.-open-hypestate {
-        font-size: 13px;
+      font-size: 13px;
     }
 
     &:hover {
-        text-decoration: none;
+      text-decoration: none;
     }
-}
+  }
 
-.report {
-    margin: 16px 0;
-
-    &-visitors {
-        margin-bottom: 8px;
-    }
+  .report {
+    margin: 16px 0 0 0;
 
     &-text {
-        color: $color-primary-text;
+      color: $color-primary-text;
     }
 
     &.-warning {
-        color: darkorange;
+      color: darkorange;
     }
 
     &-wait {
-        text-align: center;
+      text-align: center;
     }
+  }
+
+  .report-visitors {
+    display: flex;
+    margin-bottom: 16px;
+
+    &__item {
+      width: 50%;
+      text-align: left;
+    }
+  }
 }

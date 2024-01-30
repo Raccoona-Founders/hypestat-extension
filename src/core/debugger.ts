@@ -8,5 +8,5 @@ export type LogHandler = (message?: any, ...optionalParams: any[]) => void;
  * @returns {LogHandler}
  */
 export function createDebugger(key: string): LogHandler {
-    return debug('hypestate:' + key) as LogHandler;
+  return debug('hypestate:' + key) as LogHandler;
 }

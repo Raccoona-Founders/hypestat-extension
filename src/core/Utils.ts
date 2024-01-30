@@ -1,7 +1,6 @@
-import {Url} from "url";
 import {HYPESTAT_URL} from "./Constant";
 
-export function isHostValid(url: Url): boolean {
+export function isHostValid(url: URL): boolean {
     const segments = url.host.split('.');
     if (segments.length < 2) {
         return false;

@@ -1,20 +1,22 @@
-@mixin size($height, $width) {
+:global {
+  @mixin size($height, $width) {
     height: $height;
     width: $width;
-}
+  }
 
-@mixin placeholder {
+  @mixin placeholder {
     &::-webkit-input-placeholder {
-        @content;
+      @content;
     }
     &::-moz-placeholder {
-        @content;
+      @content;
     }
     &:-ms-input-placeholder {
-        @content;
+      @content;
     }
-}
+  }
 
-@mixin block-shadow ($alpha: 0.45) {
+  @mixin block-shadow($alpha: 0.45) {
     box-shadow: 0 10px 20px 0 rgba(58, 60, 71, $alpha);
+  }
 }

@@ -1,4 +1,5 @@
 .idea
+.DS_Store
 /dist/*
 /builds/*
 .gulp-scss-cache

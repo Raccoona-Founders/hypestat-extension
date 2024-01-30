@@ -1,24 +1,10 @@
 {
-  "presets": [
-    [
-      "env",
-      {
-        "targets": {
-          "node": "current",
-          "uglify": true
-        }
-      }
-    ],
-    "react",
-    "es2017",
-    "es2016",
-    "es2015",
-    "stage-0"
-  ],
+  "presets": ["@babel/preset-env"],
   "retainLines": true,
   "plugins": [
     "dynamic-import-node",
     "transform-decorators-legacy",
-    "transform-class-properties"
-  ]
+    "@babel/plugin-transform-class-properties"
+  ],
+  "ignore": ["node_modules"]
 }

@@ -1,120 +1,113 @@
-import gulp from 'gulp';
-import Path from 'path';
-import del from 'del';
-import jsoneditor from 'gulp-json-editor';
-import zip from 'gulp-zip';
+const gulp = require('gulp');
+const path = require('path');
+const zip = require('gulp-zip');
+const jsoneditor = require('gulp-json-editor');
 
+const packageJson = require('./package.json');
 const manifest = require('./resources/manifest.json');
 
 const PATH = {
-    SOURCE: Path.join(__dirname, './src'),
-    TARGET: Path.join(__dirname, './dist'),
-    BUILDS: Path.join(__dirname, './builds')
+  SOURCE: path.join(__dirname, './src'),
+  TARGET: path.join(__dirname, './dist')
 };
 
 gulp.task('copy:root', copyTask({
-    source: './app/',
-    destinations: [
-        './dist/firefox',
-        './dist/chrome'
-    ],
-    pattern: '/*',
+  source: './app/',
+  destinations: [
+    './dist'
+  ],
+  pattern: '/*',
 }));
 
 gulp.task('copy:images', copyTask({
-    source: './resources/images/',
-    destinations: [
-        './dist/firefox/images',
-        './dist/chrome/images'
-    ]
+  source: './resources/images/',
+  destinations: [
+    './dist/images'
+  ]
 }));
 
-gulp.task('copy:locales', copyTask({
-    source: './resources/_locales/',
-    destinations: [
-        './dist/firefox/_locales',
-        './dist/chrome/_locales'
-    ]
+gulp.task('copy:fonts', copyTask({
+  source: './resources/fonts/',
+  destinations: [
+    './dist/fonts'
+  ]
 }));
 
 gulp.task('copy:views', copyTask({
-    source: './resources/views/',
-    destinations: [
-        './dist/firefox/views',
-        './dist/chrome/views'
-    ]
+  source: './resources/views/',
+  destinations: [
+    './dist/views'
+  ]
+}));
+
+gulp.task('copy:locales', copyTask({
+  source: './resources/_locales/',
+  destinations: [
+    './dist/_locales'
+  ]
 }));
 
 gulp.task('manifest:production', () => {
-    return gulp
-        .src('./resources/manifest.json')
-        .pipe(generateManifestBuilder())
-        .pipe(gulp.dest('./dist/firefox', {overwrite: true}))
-        .pipe(jsoneditor((json) => {
-            delete json.applications;
+  return gulp
+    .src('./resources/manifest.json')
+    .pipe(jsoneditor((json) => {
+      json.version = packageJson.version;
 
-            return json
-        }))
-        .pipe(gulp.dest('./dist/chrome', {overwrite: true}))
+      return json;
+    }))
+    .pipe(jsoneditor((json) => {
+      delete json.applications;
+
+      return json;
+    }))
+    .pipe(gulp.dest('./dist', {overwrite: true}));
 });
 
-const staticFiles = ['images', 'views', 'locales'];
+//|---------------------------------------------------------------------------
+//| Configuration for create JavaScript bundles
+//| Use WebPack
+//|---------------------------------------------------------------------------
+
+
+const staticFiles = ['images', 'views', 'root', 'fonts', 'locales'];
 let copyStrings = staticFiles.map(staticFile => `copy:${staticFile}`);
-gulp.task('copy', [
-    ...copyStrings,
-    'manifest:production'
-]);
+gulp.task('copy', gulp.series(
+  ...copyStrings,
+  'manifest:production'
+));
 
-gulp.task('clean', function clean() {
-    return del(['./dist/*']);
-});
-
-gulp.task('build', ['copy']);
+gulp.task('build', gulp.parallel('copy'));
 
 gulp.task('copy:watch', function () {
-    gulp.watch(['./src/*.*'], 'build');
+  // @ts-ignore
+  gulp.watch(['./src/*.*'], 'build');
 });
 
-gulp.task('zip:chrome', zipTask('chrome'));
-gulp.task('zip:firefox', zipTask('firefox'));
-gulp.task('zip', ['zip:chrome', 'zip:firefox']);
+gulp.task('zip', zipTask());
 
 function copyTask(opts) {
-    const {
-        source,
-        destination,
-        destinations = [destination],
-        pattern = '/**/*'
-    } = opts;
+  const {
+    source,
+    destination,
+    destinations = [destination],
+    pattern = '/**/*'
+  } = opts;
 
-    return () => {
-        let stream = gulp.src(source + pattern, {base: source})
-        destinations.forEach((destination) => {
-            stream = stream.pipe(gulp.dest(destination))
-        });
-
-        return stream
-    }
-}
-
-function zipTask(target) {
-    const packageJson = require('./package.json');
-
-    return () => {
-        return gulp
-            .src(`./dist/${target}/**`)
-            .pipe(zip(`hypestat-${target}-${packageJson.version}.zip`))
-            .pipe(gulp.dest('./builds'));
-    }
-}
-
-
-function generateManifestBuilder() {
-    const packageJson = require('./package.json');
-
-    return jsoneditor((json) => {
-        json.version = packageJson.version;
-
-        return json
+  return () => {
+    let stream = gulp.src(source + pattern, {base: source});
+    destinations.forEach((destination) => {
+      stream = stream.pipe(gulp.dest(destination));
     });
+
+    return stream;
+  };
+}
+
+function zipTask() {
+  return () => {
+    return gulp
+      .src(`./dist/**`)
+      .pipe(zip(`ig-followers-with-tags-${packageJson.version}.zip`))
+      .pipe(gulp.dest('./builds'));
+  }
 }
